@@ -29,9 +29,7 @@ module ksa(
     logic [7:0] i, j;
     logic [7:0] Si, Sj, temp;
 
-    // -------------------------
-    // Sequential logic
-    // -------------------------
+    // Sequential Logic
     always_ff @(posedge clk or negedge rst_n) begin
         if (!rst_n) begin
             state <= IDLE;
@@ -84,9 +82,7 @@ module ksa(
         end
     end
 
-    // -------------------------
-    // Next-state logic
-    // -------------------------
+    // Next State logic
     always_comb begin
         next_state = state;
 
@@ -104,9 +100,7 @@ module ksa(
         endcase
     end
 
-    // -------------------------
-    // Combinational outputs
-    // -------------------------
+    // Combinational Outputs
     always_comb begin
         addr   = 0;
         wrdata = 0;

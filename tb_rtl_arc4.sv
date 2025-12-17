@@ -2,9 +2,7 @@
 
 module tb_rtl_arc4;
 
-    // ======================
-    // DUT Signals
-    // ======================
+    // DUT signals
     logic clk, rst_n;
     logic en, rdy;
 
@@ -22,9 +20,7 @@ module tb_rtl_arc4;
     int key_len;
     logic [7:0] key_bytes [0:2];
 
-    // ======================
-    // Memory models
-    // ======================
+    // Instantiating CT and PT
     logic [7:0] CT_mem [0:255];
     logic [7:0] PT_mem [0:255];
 
@@ -41,9 +37,7 @@ module tb_rtl_arc4;
             PT_mem[pt_addr] <= pt_wrdata;
     end
 
-    // ======================
-    // Instantiate ARC4
-    // ======================
+    // Instantiating ARC4
     arc4 dut(
         .clk(clk),
         .rst_n(rst_n),
@@ -58,9 +52,7 @@ module tb_rtl_arc4;
         .pt_wren(pt_wren)
     );
 
-    // ======================
-    // TB Tasks
-    // ======================
+    // Testbench starts
 
     
     task load_ciphertext();
@@ -134,9 +126,7 @@ module tb_rtl_arc4;
             PT_mem[i] = 8'h00;
     endtask
 
-    // ======================
-    // Main TB Flow
-    // ======================
+    // Main testbench
     initial begin
 
         clk = 0;

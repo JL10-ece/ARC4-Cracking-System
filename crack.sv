@@ -75,9 +75,7 @@ module crack(input logic clk, input logic rst_n,
     assign ct_rddata_arc4 = ct_rddata;
     assign pt_rddata_arc4 = pt_rddata_mem;
 
-    // ------------------------------------------------------------
-    //  FIRST always_ff BLOCK (no rst_n_arc4 writes anymore)
-    // ------------------------------------------------------------
+    // First always block
     always_ff @(posedge clk or negedge rst_n) begin
 
         if (!rst_n) begin
@@ -92,9 +90,7 @@ module crack(input logic clk, input logic rst_n,
         
         else begin
             
-            // -----------------------------------------------------
-            //  FREEZE LOGIC — The correct way
-            // -----------------------------------------------------
+            // Freeze logic
             if (!stop) begin
                 // Allow FSM to advance
                 state <= next_state;
@@ -151,18 +147,12 @@ module crack(input logic clk, input logic rst_n,
                 endcase
 
             end 
-            // -----------------------------------------------------
-            // else: stop == 1 → automatic freeze
-            // Do nothing here. The flop values naturally stay unchanged.
-            // -----------------------------------------------------
 
         end
     end
 
 
-    // ------------------------------------------------------------
-    //  SECOND always_comb BLOCK (unchanged logic)
-    // ------------------------------------------------------------
+    // Second Combinational Logic Block
     always_comb begin
         next_state = state;
 
@@ -218,10 +208,7 @@ module crack(input logic clk, input logic rst_n,
         endcase
     end
 
-    // ------------------------------------------------------------
-    //  THIRD always_comb BLOCK — FIXED
-    //  (rst_n_arc4 now controlled *here*, NOT in always_ff)
-    // ------------------------------------------------------------
+    // Third logic block (combinational) for the task outputs
     always_comb begin
         // defaults
         en_arc4     = 1'b0;

@@ -16,10 +16,7 @@ module task1(
     // memory output (internal wire)
     logic [7:0] mem_q;
 
-    //-----------------------------------------------------------------
-    // s_mem instance (single-ported RAM / ROM)
-    // map its q output to mem_q, not directly to LEDR to avoid multiple drivers
-    //-----------------------------------------------------------------
+    // memory instantiation
     s_mem s (
         .address (addr_w),
         .clock   (CLOCK_50),
@@ -28,9 +25,7 @@ module task1(
         .q       (mem_q)
     );
 
-    //-----------------------------------------------------------------
-    // init instance
-    //-----------------------------------------------------------------
+    // initializing instantiation
     init pop (
         .clk    (CLOCK_50),
         .rst_n  (KEY[3]),   // active-low reset
@@ -41,10 +36,7 @@ module task1(
         .wren   (wren_w)
     );
 
-    //-----------------------------------------------------------------
-    // en_w: hold low during reset, set high after reset released
-    // (you can change this to a button start if you prefer)
-    //-----------------------------------------------------------------
+    // enable toggles
     always_ff @(posedge CLOCK_50 or negedge KEY[3]) begin
         if (!KEY[3])
             en_w <= 1'b0;
@@ -52,26 +44,14 @@ module task1(
             en_w <= 1'b1;
     end
 
-    //-----------------------------------------------------------------
-    // Drive all LEDR bits from one sequential block (no multiple drivers)
-    // LEDR[9] = rdy (init done)
-    // LEDR[8] = wren (write active)
-    // LEDR[7:0] = contents of memory at address (mem_q)
-    //-----------------------------------------------------------------
+    // Updating the LEDs
     always_ff @(posedge CLOCK_50) begin
         LEDR[9]   <= rdy_w;
         LEDR[8]   <= wren_w;
         LEDR[7:0] <= mem_q;
     end
 
-    //-----------------------------------------------------------------
-    // HEX display — show "init" when rdy_w = 1
-    // 7-seg encodings used earlier:
-    //  i : 7'b1111001
-    //  n : 7'b0101011
-    //  t : 7'b0000111
-    // blank: 7'b1111111
-    //-----------------------------------------------------------------
+    // HEX display init when ready
     always_comb begin
         if (rdy_w) begin
             HEX5 = 7'b1111001;   // i

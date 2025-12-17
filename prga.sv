@@ -56,9 +56,7 @@ module prga(
     logic [7:0] current_i;  // i for this iteration (i+1)
     logic [7:0] ct_data_buf;  // Buffer for ciphertext byte
 
-    // -------------------------
-    // 1. Sequential logic
-    // -------------------------
+    // Sequential logic block (State register updates)
     always_ff @(posedge clk or negedge rst_n) begin
         if (!rst_n) begin
             state       <= IDLE;
@@ -128,9 +126,7 @@ module prga(
         end
     end
 
-    // -------------------------
-    // 2. Next-state logic
-    // -------------------------
+    // 2nd logic block (state updating)
     always_comb begin
         next_state = state;
 
@@ -156,9 +152,7 @@ module prga(
         endcase
     end
 
-    // -------------------------
-    // 3. Combinational outputs
-    // -------------------------
+    // Combinational logic block (outputs)
     always_comb begin
         // Default outputs
         s_addr    = 0;

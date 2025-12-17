@@ -23,9 +23,7 @@ module tb_rtl_doublecrack;
         en = 1;  // start cracking
     end
 
-    // ------------------------------------------------------------
-    // DUT I/O - doublecrack
-    // ------------------------------------------------------------
+    // Instantiating CT logic
     logic [7:0] ct_addr;
     logic [7:0] ct_rddata;
 
@@ -44,9 +42,6 @@ module tb_rtl_doublecrack;
         .ct_rddata(ct_rddata)
     );
 
-    // ------------------------------------------------------------
-    // Fake CT memory (SAME ciphertext as before)
-    // ------------------------------------------------------------
     logic [7:0] CT_mem [0:255];
 
     task load_ciphertext();
@@ -80,9 +75,7 @@ module tb_rtl_doublecrack;
 
     assign ct_rddata = CT_mem[ct_addr];
 
-    // ------------------------------------------------------------
-    // KEY-BY-KEY PRINTING LOGIC (for both crack instances)
-    // ------------------------------------------------------------
+    // Key printing logic
     logic [23:0] last_key_c1, last_key_c2;
 
     initial begin
@@ -147,9 +140,7 @@ module tb_rtl_doublecrack;
         end
     end
 
-    // ------------------------------------------------------------
-    // Performance monitoring
-    // ------------------------------------------------------------
+    // Monitoring Performace
     logic [31:0] cycle_count;
     logic [31:0] keys_tested;
 

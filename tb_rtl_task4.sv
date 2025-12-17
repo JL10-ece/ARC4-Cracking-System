@@ -2,9 +2,7 @@
 
 module tb_rtl_task4;
 
-    // ------------------------------------------------------------
-    // DUT I/O
-    // ------------------------------------------------------------
+    // Instantiating the logic/wires
     logic CLOCK_50;
     logic [3:0] KEY;
     logic [9:0] SW;
@@ -12,9 +10,7 @@ module tb_rtl_task4;
     logic [6:0] HEX0, HEX1, HEX2, HEX3, HEX4, HEX5;
     logic [9:0] LEDR;
 
-    // ------------------------------------------------------------
-    // Instantiate DUT
-    // ------------------------------------------------------------
+    // Instantiating task4
     task4 dut (
         .CLOCK_50 (CLOCK_50),
         .KEY      (KEY),
@@ -28,16 +24,11 @@ module tb_rtl_task4;
         .LEDR     (LEDR)
     );
 
-    // ------------------------------------------------------------
-    // Clock generation 50 MHz → 20ns period
-    // ------------------------------------------------------------
+    // Clock generation
     initial CLOCK_50 = 0;
     always #10 CLOCK_50 = ~CLOCK_50;
 
-    // ------------------------------------------------------------
-    // Memory initialization stub
-    // (Make sure your ct_mem has a $readmemh inside it)
-    // ------------------------------------------------------------
+    // Memory Initialization
 
     initial begin
         // Plain defaults
@@ -52,9 +43,7 @@ module tb_rtl_task4;
         KEY[3] = 1'b1;   // release reset (rst_n = 1)
     end
 
-    // ------------------------------------------------------------
-    // Monitor key signals
-    // ------------------------------------------------------------
+    // Monitoring Signals
     initial begin
         $display("Starting simulation...");
         $display("Time    ct_addr   ct_rddata   crack_rdy   crack_key       key_valid");
@@ -67,9 +56,7 @@ module tb_rtl_task4;
                  dut.crack_key_valid);
     end
 
-    // ------------------------------------------------------------
-    // Stop simulation automatically
-    // ------------------------------------------------------------
+    // Stopping after simulation
     initial begin
         wait(dut.crack_key_valid == 1);
         #100;

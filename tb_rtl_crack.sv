@@ -2,9 +2,7 @@
 
 module tb_rtl_crack;
 
-    // ------------------------------------------------------------
-    // Clock + reset
-    // ------------------------------------------------------------
+    // Clock and reset logic
     logic clk;
     logic rst_n;
     logic en;
@@ -23,9 +21,7 @@ module tb_rtl_crack;
         en = 1;  // start cracking
     end
 
-    // ------------------------------------------------------------
-    // DUT I/O
-    // ------------------------------------------------------------
+    // Input and output instantiation
     logic [7:0] ct_addr;
     logic [7:0] ct_rddata;
 
@@ -48,9 +44,7 @@ module tb_rtl_crack;
         .step_key(24'd1)
     );
 
-    // ------------------------------------------------------------
-    // Fake CT memory
-    // ------------------------------------------------------------
+    // Other CT memory instantiation
     logic [7:0] CT_mem [0:255];
 
     task load_ciphertext();
@@ -78,9 +72,7 @@ module tb_rtl_crack;
 
     assign ct_rddata = CT_mem[ct_addr];
 
-    // ------------------------------------------------------------
-    // KEY-BY-KEY PRINTING LOGIC
-    // ------------------------------------------------------------
+    // Key printing logic
     logic [23:0] last_key;
 
     initial begin

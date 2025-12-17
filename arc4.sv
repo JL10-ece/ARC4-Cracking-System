@@ -100,9 +100,7 @@ module arc4(input logic clk, input logic rst_n,
 
     arc_state state, next_state;
 
-// ------------------------------------------------------------
-// State register
-// ------------------------------------------------------------
+// State flip flop block
 always_ff @(posedge clk or negedge rst_n) begin
     if (!rst_n)
         state <= A_IDLE;
@@ -110,9 +108,7 @@ always_ff @(posedge clk or negedge rst_n) begin
         state <= next_state;
 end
 
-// ------------------------------------------------------------
-// Next-state logic
-// ------------------------------------------------------------
+// State updating logic (combinational)
 always_comb begin
     next_state = state;
 
@@ -154,9 +150,7 @@ always_comb begin
     endcase
 end
 
-// ------------------------------------------------------------
-// Output / control logic (1-cycle pulses + S-mem arbitration)
-// ------------------------------------------------------------
+// Combinational output block
 always_comb begin
     // defaults
     init_en  = 1'b0;
@@ -171,9 +165,7 @@ always_comb begin
 
     case (state)
 
-        //------------------------
-        // INIT
-        //------------------------
+        // init
         A_INIT_START: begin
             init_en  = 1'b1;          // *** clean 1-cycle pulse ***
             s_addr   = init_addr;
@@ -187,9 +179,7 @@ always_comb begin
             s_wren   = init_wren;
         end
 
-        //------------------------
-        // KSA
-        //------------------------
+        // ksa
         A_KSA_START: begin
             ksa_en   = 1'b1;          // *** clean 1-cycle pulse ***
             s_addr   = ksa_addr;
@@ -203,9 +193,7 @@ always_comb begin
             s_wren   = ksa_wren;
         end
 
-        //------------------------
-        // PRGA
-        //------------------------
+        // prga
         A_PRGA_START: begin
             prga_en  = 1'b1;          // *** clean 1-cycle pulse ***
             s_addr   = prga_s_addr;
@@ -219,11 +207,9 @@ always_comb begin
             s_wren   = prga_s_wren;
         end
 
-        //------------------------
-        // DONE
-        //------------------------
+        // done
         DONE: begin
-            rdy = 1'b1;               // finished
+            rdy = 1'b1; // finished
         end
     endcase
 end

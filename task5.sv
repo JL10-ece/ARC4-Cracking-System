@@ -11,7 +11,7 @@ module task5(input logic CLOCK_50, input logic [3:0] KEY, input logic [9:0] SW,
     logic crack_en;
     assign crack_en = 1'b1;
 
-    // ct wires
+    // CT wires
     logic [7:0] ct_addr;
     logic [7:0] ct_rddata;
 
@@ -20,9 +20,7 @@ module task5(input logic CLOCK_50, input logic [3:0] KEY, input logic [9:0] SW,
     logic [23:0] dcrack_key;
     logic dcrack_key_valid;
 
-    // ------------------------------------------------------------
-    // ct_mem instantiation
-    // ------------------------------------------------------------
+    // Instantiating CT mem
     ct_mem ct(
         .address(ct_addr),
         .clock(CLOCK_50),
@@ -31,9 +29,7 @@ module task5(input logic CLOCK_50, input logic [3:0] KEY, input logic [9:0] SW,
         .q(ct_rddata)
     );
 
-    // ------------------------------------------------------------
-    // doublecrack instantiation
-    // ------------------------------------------------------------
+    // Doublecrack instantiation
     doublecrack dc(
         .clk(CLOCK_50),
         .rst_n(rst_n),
@@ -45,9 +41,7 @@ module task5(input logic CLOCK_50, input logic [3:0] KEY, input logic [9:0] SW,
         .ct_rddata(ct_rddata)
     );
 
-    // ------------------------------------------------------------
-    // Hex7 decoder function (same as task4)
-    // ------------------------------------------------------------
+    // HEX function
     function automatic [6:0] hex7(input logic [3:0] nibble);
         case (nibble)
             4'h0: hex7 = 7'b1000000; // 0
@@ -73,9 +67,7 @@ module task5(input logic CLOCK_50, input logic [3:0] KEY, input logic [9:0] SW,
     localparam [6:0] SEG_BLANK = 7'b1111111;
     localparam [6:0] SEG_DASH  = 7'b0111111;
 
-    // ------------------------------------------------------------
-    // Hex display logic
-    // ------------------------------------------------------------
+    // HEX logic
     always_comb begin
         // default: all blank
         HEX0 = SEG_BLANK;
@@ -107,10 +99,7 @@ module task5(input logic CLOCK_50, input logic [3:0] KEY, input logic [9:0] SW,
         // else (dcrack_rdy == 0): leave all blank while computing
     end
 
-    // ------------------------------------------------------------
-    // LED assignments
-    // ------------------------------------------------------------
-    // LEDR[0] = rdy, LEDR[1] = key_valid, LEDR[2] = which instance found it
+    // Assigning LED
     assign LEDR[0]   = dcrack_rdy;
     assign LEDR[1]   = dcrack_key_valid;
     

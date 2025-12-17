@@ -21,9 +21,7 @@ module doublecrack(input logic clk, input logic rst_n,
     logic crack_en;
     assign crack_en = en && !global_stop;
 
-    // ------------------------------------------------------------
-    // Instantiate crack modules
-    // ------------------------------------------------------------
+    // Instantiating both crack modules
     crack c1(
         .clk(clk),
         .rst_n(rst_n),
@@ -55,9 +53,7 @@ module doublecrack(input logic clk, input logic rst_n,
     // Detect when either finds a key
     assign found_key = key_valid1 || key_valid2;
     
-    // ------------------------------------------------------------
-    // Output logic - SIMPLE
-    // ------------------------------------------------------------
+    // Output logic - Simple
     always_ff @(posedge clk or negedge rst_n) begin
         if (!rst_n) begin
             rdy <= 1'b0;
@@ -81,9 +77,7 @@ module doublecrack(input logic clk, input logic rst_n,
         end
     end
     
-    // ------------------------------------------------------------
-    // Ciphertext address multiplexing
-    // ------------------------------------------------------------
+    // Ciphertext
     always_comb begin
         // Priority to c1
         ct_addr = ct_addr1;
